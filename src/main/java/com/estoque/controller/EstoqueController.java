@@ -36,7 +36,7 @@ public class EstoqueController {
 		return "redirect:/cadastrarEstoque";
 	}
 	
-	@RequestMapping(value="/estoque")
+	@RequestMapping(value="/")
 	public ModelAndView listEstoque(){
 		ModelAndView mv = new ModelAndView("estoque/listEstoque");
 		Iterable<EstoqueModel> estoques = estoqueRepository.findAll();
