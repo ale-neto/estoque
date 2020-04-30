@@ -31,7 +31,7 @@
 		    <tr>
 		    	<th></th>
 		    	<th></th>
-	
+		    	<th></th>
 				<th>Id</th>
 				<th>Empresa</th>
 				<th>Data de Entrada</th>
@@ -40,7 +40,9 @@
 		</thead>
 		<tbody>
 			<tr th:each="estoque : ${estoques}">
-					<td><a th:href="${(#mvc.url('EC#detalheNota').arg(0, estoque.id)).build()}" class="btn-floating green"><i
+					<td><a th:href="@{/atualizar/{id}(id=${estoque.id})}" class="btn-floating green"><i
+			class="material-icons left">create</i></a></td>
+					<td><a th:href="@{/detalhe/{id}(id=${estoque.id})}" class="btn-floating blue"><i
 			class="material-icons left">remove_red_eye</i></a></td>
 					<td><a th:href="${(#mvc.url('EC#deletarEstoque').arg(0, estoque.id)).build()}" class="btn-floating red"><i
 			class="material-icons left">delete</i></a></td>
