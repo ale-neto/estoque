@@ -100,7 +100,7 @@ public class EstoqueController {
 		EstoqueModel estoque = produto.getEstoque();
 		long idEstoque = estoque.getId();
 		String idString = "" + idEstoque;
-		return "redirect:/" + idString;
+		return "redirect:/detalhe/" + idString;
 	}
 	
 }
