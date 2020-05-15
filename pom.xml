@@ -6,7 +6,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.2.6.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.estoque</groupId>
 	<artifactId>estoque</artifactId>
@@ -54,6 +54,22 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
+
+		<dependency>
+			<groupId>com.ibm.watson</groupId>
+			<artifactId>ibm-watson</artifactId>
+			<version>8.4.0</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.ibm.watson.developer_cloud/visual-recognition -->
+		<dependency>
+			<groupId>com.ibm.watson.developer_cloud</groupId>
+			<artifactId>visual-recognition</artifactId>
+			<version>3.5.3</version>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>

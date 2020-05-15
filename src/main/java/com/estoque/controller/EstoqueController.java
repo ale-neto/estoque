@@ -112,7 +112,6 @@ public class EstoqueController {
 	public String uploadImage(EstoqueModel img, RedirectAttributes attributes){
 		ClassifyImage classifyImage = new ClassifyImage();
 		classifyImage.classfy(img.getImg());
-		System.out.println(classifyImage.getText());
 		attributes.addFlashAttribute("mensagem",classifyImage.getText());
 		return "redirect:/classifyImage";
 		
