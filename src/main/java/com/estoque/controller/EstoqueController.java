@@ -17,6 +17,8 @@ import com.estoque.model.ProdutoModel;
 import com.estoque.repository.EstoqueRepository;
 import com.estoque.repository.ProdutoRepository;
 
+import configure.ClassifyImage;
+
 @Controller
 public class EstoqueController {
 	
@@ -100,5 +102,21 @@ public class EstoqueController {
 		String idString = "" + idEstoque;
 		return "redirect:/detalhe/" + idString;
 	}
+	
+	@RequestMapping(value="/classifyImage", method=RequestMethod.GET)
+	public String imageClass(){
+		return "estoque/classifyImage";
+	}
+	
+	@RequestMapping(value="/classifyImage", method=RequestMethod.POST)
+	public String uploadImage(EstoqueModel img, RedirectAttributes attributes){
+		ClassifyImage classifyImage = new ClassifyImage();
+		classifyImage.classfy(img.getImg());
+		System.out.println(classifyImage.getText());
+		attributes.addFlashAttribute("mensagem",classifyImage.getText());
+		return "redirect:/classifyImage";
+		
+	}
+	
 	
 }

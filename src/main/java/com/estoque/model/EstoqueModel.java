@@ -31,6 +31,7 @@ public class EstoqueModel implements Serializable  {
 	private String dataEmissao;
 	private String dataEntrada;
 	private String horaEntrada;
+	private String img;
 	@OneToMany
 	private List<ProdutoModel> produto;
 	/********************************/
@@ -76,6 +77,12 @@ public class EstoqueModel implements Serializable  {
 	}
 	public void setProduto(List<ProdutoModel> produto) {
 		this.produto = produto;
+	}
+	public String getImg() {
+		return img;
+	}
+	public void setImg(String img) {
+		this.img = img;
 	}
 	
 }
