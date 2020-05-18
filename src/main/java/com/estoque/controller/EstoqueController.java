@@ -1,14 +1,21 @@
 package com.estoque.controller;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -103,19 +110,38 @@ public class EstoqueController {
 		return "redirect:/detalhe/" + idString;
 	}
 	
-	@RequestMapping(value="/classifyImage", method=RequestMethod.GET)
-	public String imageClass(){
+	
+	@RequestMapping(value = "/classifyImage", method = RequestMethod.GET)
+	public String imageClass() {
 		return "estoque/classifyImage";
 	}
+
+	@RequestMapping(value = "/classifyImage", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public String fileUpload(@RequestParam MultipartFile file, RedirectAttributes attributes) throws IOException {
+
+		ClassifyImage classifyImage = new ClassifyImage();
+
+		InputStream inputStream = new BufferedInputStream(file.getInputStream());
+		classifyImage.classfy(inputStream);
+
+		attributes.addFlashAttribute("mensagem", classifyImage.getText());
+		return "redirect:/classifyImage";
+	}
 	
-	@RequestMapping(value="/classifyImage", method=RequestMethod.POST)
+	
+	/*@RequestMapping(value="/classifyImage", method=RequestMethod.GET)
+	public String imageClass(){
+		return "estoque/classifyImage";
+	}*/
+	
+	/*@RequestMapping(value="/classifyImage", method=RequestMethod.POST)
 	public String uploadImage(EstoqueModel img, RedirectAttributes attributes){
 		ClassifyImage classifyImage = new ClassifyImage();
-		classifyImage.classfy(img.getImg());
+		System.out.println(img.getImg().toString());
 		attributes.addFlashAttribute("mensagem",classifyImage.getText());
 		return "redirect:/classifyImage";
 		
-	}
+	}*/
 	
 	
 }
