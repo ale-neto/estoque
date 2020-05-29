@@ -28,68 +28,69 @@ import configure.ClassifyImage;
 
 @Controller
 public class EstoqueController {
-	
+
 	@Autowired
 	private ProdutoRepository produtoRepository;
-	
+
 	@Autowired
 	private EstoqueRepository estoqueRepository;
-	
-	@RequestMapping(value="/cadastrarEstoque", method=RequestMethod.GET)
-	public String form(){
+
+	@RequestMapping(value = "/cadastrarEstoque", method = RequestMethod.GET)
+	public String form() {
 		return "estoque/formEstoque";
 	}
-	
-	@RequestMapping(value="/cadastrarEstoque", method=RequestMethod.POST)
-	public String form(EstoqueModel estoque){
+
+	@RequestMapping(value = "/cadastrarEstoque", method = RequestMethod.POST)
+	public String form(EstoqueModel estoque) {
 		estoqueRepository.save(estoque);
 		return "redirect:/cadastrarEstoque";
 	}
-	
-	@RequestMapping(value="/")
-	public ModelAndView listEstoque(){
+
+	@RequestMapping(value = "/")
+	public ModelAndView listEstoque() {
 		ModelAndView mv = new ModelAndView("estoque/listEstoque");
 		Iterable<EstoqueModel> estoques = estoqueRepository.findAll();
 		mv.addObject("estoques", estoques);
 		return mv;
 	}
 
-	
-	@RequestMapping(value="/detalhe/{id}", method=RequestMethod.GET)
-	public String detalheNota(@PathVariable("id") long id, Model model){
+	@RequestMapping(value = "/detalhe/{id}", method = RequestMethod.GET)
+	public String detalheNota(@PathVariable("id") long id, Model model) {
 		EstoqueModel estoque = estoqueRepository.findById(id);
 		model.addAttribute("estoque", estoque);
 		Iterable<ProdutoModel> produto = produtoRepository.findByEstoque(estoque);
 		model.addAttribute("produtos", produto);
 		return "estoque/detalheNota";
 	}
-	
-	@RequestMapping(value="/atualizar/{id}", method=RequestMethod.GET)
-	public String atualizarNota(@PathVariable("id") long id, Model model){
+
+	@RequestMapping(value = "/atualizar/{id}", method = RequestMethod.GET)
+	public String atualizarNota(@PathVariable("id") long id, Model model) {
 		EstoqueModel estoque = estoqueRepository.findById(id);
 		model.addAttribute("estoque", estoque);
 		Iterable<ProdutoModel> produto = produtoRepository.findByEstoque(estoque);
 		model.addAttribute("produtos", produto);
 		return "estoque/atualizarEstoque";
 	}
-	
-	@RequestMapping(value="/update/{id}", method=RequestMethod.POST)
-	public String updateEstoque(@PathVariable("id") long id, @Valid EstoqueModel estoque, BindingResult result, Model model){
+
+	@RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
+	public String updateEstoque(@PathVariable("id") long id, @Valid EstoqueModel estoque, BindingResult result,
+			Model model) {
 		estoque.setId(id);
 		estoqueRepository.save(estoque);
-		return "redirect:/";	
+		return "redirect:/";
 	}
-	
-	@RequestMapping(value="/deletarEstoque")
-	public String deletarEstoque(long id){
-		EstoqueModel estoque =  estoqueRepository.findById(id);
+
+	@RequestMapping(value = "/deletarEstoque")
+	public String deletarEstoque(long id) {
+		EstoqueModel estoque = estoqueRepository.findById(id);
 		estoqueRepository.delete(estoque);
 		return "redirect:/estoque";
 	}
-	
-	@RequestMapping(value="/detalhe/{id}", method=RequestMethod.POST)
-	public String detalheNotaP(@PathVariable("id") long id, @Valid ProdutoModel produto, BindingResult result, RedirectAttributes attributes){
-		if(result.hasErrors()){
+
+	@RequestMapping(value = "/detalhe/{id}", method = RequestMethod.POST)
+	public String detalheNotaP(@PathVariable("id") long id, @Valid ProdutoModel produto, BindingResult result,
+			RedirectAttributes attributes) {
+		if (result.hasErrors()) {
 			attributes.addFlashAttribute("mensagem", "Verifique os campos!");
 			return "redirect:/detalhe/{id}";
 		}
@@ -99,9 +100,9 @@ public class EstoqueController {
 		attributes.addFlashAttribute("mensagem", "Produto adicionado com sucesso!");
 		return "redirect:/detalhe/{id}";
 	}
-	
-	@RequestMapping(value="/deletarProduto")
-	public String deletarProduto(long codigo){
+
+	@RequestMapping(value = "/deletarProduto")
+	public String deletarProduto(long codigo) {
 		ProdutoModel produto = produtoRepository.findByCodigo(codigo);
 		produtoRepository.delete(produto);
 		EstoqueModel estoque = produto.getEstoque();
@@ -109,8 +110,7 @@ public class EstoqueController {
 		String idString = "" + idEstoque;
 		return "redirect:/detalhe/" + idString;
 	}
-	
-	
+
 	@RequestMapping(value = "/classifyImage", method = RequestMethod.GET)
 	public String imageClass() {
 		return "estoque/classifyImage";
@@ -118,30 +118,12 @@ public class EstoqueController {
 
 	@RequestMapping(value = "/classifyImage", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public String fileUpload(@RequestParam MultipartFile file, RedirectAttributes attributes) throws IOException {
-
 		ClassifyImage classifyImage = new ClassifyImage();
-
 		InputStream inputStream = new BufferedInputStream(file.getInputStream());
 		classifyImage.classfy(inputStream);
-
-		attributes.addFlashAttribute("mensagem", classifyImage.getText());
+		System.out.println(classifyImage.getRest().toString());
+		attributes.addFlashAttribute("mensagem", classifyImage.getRest().toString());
 		return "redirect:/classifyImage";
 	}
-	
-	
-	/*@RequestMapping(value="/classifyImage", method=RequestMethod.GET)
-	public String imageClass(){
-		return "estoque/classifyImage";
-	}*/
-	
-	/*@RequestMapping(value="/classifyImage", method=RequestMethod.POST)
-	public String uploadImage(EstoqueModel img, RedirectAttributes attributes){
-		ClassifyImage classifyImage = new ClassifyImage();
-		System.out.println(img.getImg().toString());
-		attributes.addFlashAttribute("mensagem",classifyImage.getText());
-		return "redirect:/classifyImage";
-		
-	}*/
-	
-	
+
 }
